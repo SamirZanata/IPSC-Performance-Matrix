@@ -1,0 +1,17 @@
+services:
+  ai-service:
+    build: .
+    container_name: ipsc-ai-engine  # Nome amigável
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env  # Melhor do que passar um por um no 'environment'
+    restart: unless-stopped # Se o WSL resetar, a IA sobe sozinha
+    networks:
+      - ipsc-network
+
+networks:
+  ipsc-network:
+    driver: bridge

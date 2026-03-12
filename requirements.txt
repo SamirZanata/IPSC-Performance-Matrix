@@ -1,2 +1,6 @@
-google-genai
+fastapi
+uvicorn
 python-dotenv
+google-generativeai
+chromadb
+pypdf
