@@ -1,89 +1,89 @@
-# 🎯 IPSC Performance Matrix — Microserviço de IA para Atiradores
+# 🎯 IPSC Performance Matrix — AI Microservice for Shooters
 
 [![Build Passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)](https://github.com)
 [![Python](https://img.shields.io/badge/python-3.11+-blue?style=flat-square&logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker)](https://docker.com)
 
-> **Microserviço de Inteligência Artificial** que une **regras oficiais**, **cálculos balísticos** e **LLM** para atiradores de IPSC (International Practical Shooting Confederation).
+> **Artificial Intelligence microservice** that combines **official rules**, **ballistic calculations**, and **LLM** for IPSC (International Practical Shooting Confederation) shooters.
 
 ---
 
-## 📖 Sobre o Projeto
+## 📖 About the Project
 
-O **IPSC Performance Matrix** é um backend de IA pensado para quem treina e compete em **tiro prático**. O sistema responde dúvidas sobre **regras do manual oficial de Handgun**, calcula **Hit Factor** e **Power Factor** conforme as fórmulas do esporte e orienta o usuário com base no regulamento — tudo via chat, com respostas fundamentadas em **RAG** e **Function Calling**.
+**IPSC Performance Matrix** is an AI backend designed for those who train and compete in **practical shooting**. The system answers questions about **Handgun rulebook rules**, computes **Hit Factor** and **Power Factor** according to the sport’s formulas, and guides the user based on the regulation — all via chat, with answers grounded in **RAG** and **Function Calling**.
 
-**Destaques:**
+**Highlights:**
 
-- 🤖 Assistente especializado em IPSC (divisões, equipamentos, penalidades, distâncias).
-- 📐 Cálculos precisos de **Hit Factor** (pontos ÷ tempo) e **Power Factor** (Major/Minor).
-- 📚 Respostas ancoradas no **manual oficial** em português (busca semântica).
-- 🛡️ Orientação para consultar um Range Officer (RO) quando a informação não estiver no manual.
-
----
-
-## 🛠 Tecnologias
-
-| Categoria        | Stack |
-|------------------|--------|
-| **Backend**      | Python 3.11, FastAPI, Uvicorn |
-| **IA / LLM**     | Google Gemini 2.5 Flash, Function Calling (Tools) |
-| **RAG**          | ChromaDB (vector database), embeddings locais (DefaultEmbeddingFunction) |
-| **PDF**          | PyPDF (extração e chunking do manual) |
-| **Infra**        | Docker, Docker Compose |
-| **Doc da API**   | Swagger UI (`/docs`) |
+- 🤖 Specialized assistant for IPSC (divisions, equipment, penalties, distances).
+- 📐 Accurate **Hit Factor** (points ÷ time) and **Power Factor** (Major/Minor) calculations.
+- 📚 Answers anchored in the **official rulebook** (semantic search).
+- 🛡️ Guidance to consult a Range Officer (RO) when the information is not in the rulebook.
 
 ---
 
-## 🏗 Arquitetura em Resumo
+## 🛠 Tech Stack
 
-- **Microserviço** em Python com FastAPI e Docker.
-- **Cérebro:** Integração com **Google Gemini 2.5 Flash** usando **Function Calling** para cálculos de Hit Factor e Power Factor.
-- **RAG:** Busca semântica no manual de Handgun com **ChromaDB** e embeddings locais (sem API de embedding externa).
-- **Infraestrutura:** Aplicação e volumes persistentes orquestrados com **Docker Compose** (banco vetorial em `./data`).
+| Category   | Stack |
+|-----------|--------|
+| **Backend** | Python 3.11, FastAPI, Uvicorn |
+| **AI / LLM** | Google Gemini 2.5 Flash, Function Calling (Tools) |
+| **RAG** | ChromaDB (vector database), local embeddings (DefaultEmbeddingFunction) |
+| **PDF** | PyPDF (manual extraction and chunking) |
+| **Infra** | Docker, Docker Compose |
+| **API docs** | Swagger UI (`/docs`) |
 
 ---
 
-## 🚀 Como Rodar
+## 🏗 Architecture Overview
 
-### Pré-requisitos
+- **Microservice** in Python with FastAPI and Docker.
+- **Brain:** Integration with **Google Gemini 2.5 Flash** using **Function Calling** for Hit Factor and Power Factor calculations.
+- **RAG:** Semantic search over the Handgun rulebook with **ChromaDB** and local embeddings (no external embedding API).
+- **Infrastructure:** Application and persistent volumes orchestrated with **Docker Compose** (vector store in `./data`).
 
-- [Docker](https://docs.docker.com/get-docker/) e [Docker Compose](https://docs.docker.com/compose/install/)
-- Arquivo `.env` na raiz do projeto com sua chave do Gemini, por exemplo:
+---
+
+## 🚀 How to Run
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- A `.env` file at the project root with your Gemini API key, for example:
   ```env
-  GOOGLE_API_KEY=sua_chave_aqui
+  GOOGLE_API_KEY=your_key_here
   ```
-  *(ou `GEMINI_API_KEY`, conforme usado no código.)*
+  *(or `GEMINI_API_KEY`, as used in the code.)*
 
-### 1. Clonar e entrar no projeto
+### 1. Clone and enter the project
 
 ```bash
-git clone <url-do-repositorio>
+git clone <repository-url>
 cd ipsc-performance-matrix
 ```
 
-### 2. Subir o serviço com Docker Compose
+### 2. Start the service with Docker Compose
 
 ```bash
 docker compose up --build -d
 ```
 
-O serviço sobe na porta **8000**. O banco vetorial fica em `./data` (volume persistente).
+The service runs on port **8000**. The vector store lives in `./data` (persistent volume).
 
-### 3. (Opcional) Ingerir o manual no ChromaDB
+### 3. (Optional) Ingest the rulebook into ChromaDB
 
-Se ainda não tiver o banco vetorial populado, rode a ingestão (por exemplo, dentro do container ou no host com o mesmo `./data`):
+If the vector store is not populated yet, run the ingestion (e.g. inside the container or on the host with the same `./data`):
 
 ```bash
-# Exemplo: executar dentro do container
+# Example: run inside the container
 docker compose exec ai-service python -m ingest_manual
 ```
 
-Certifique-se de que o PDF do manual (ex.: `data/2026-Handgun-pt_BRA.pdf`) está no lugar esperado pelo script.
+Ensure the rulebook PDF (e.g. `data/2026-Handgun-pt_BRA.pdf`) is in the path expected by the script.
 
-### 4. Documentação da API (Swagger)
+### 4. API documentation (Swagger)
 
-Acesse no navegador:
+Open in your browser:
 
 ```
 http://localhost:8000/docs
@@ -91,56 +91,56 @@ http://localhost:8000/docs
 
 ---
 
-## 📡 Demonstração de Query (cURL)
+## 📡 Sample Query (cURL)
 
-Exemplo de pergunta ao assistente (regras + cálculos):
+Example request to the assistant (rules + calculations):
 
 ```bash
 curl -X POST "http://localhost:8000/v1/chat" \
   -H "Content-Type: application/json" \
-  -d '{"message": "Qual a distância mínima para alvos metálicos segundo o manual? E calcula o hit factor para 120 pontos em 18 segundos."}'
+  -d '{"message": "What is the minimum distance for metal targets according to the rulebook? And calculate the hit factor for 120 points in 18 seconds."}'
 ```
 
-**Resposta esperada (exemplo):**
+**Expected response (example):**
 
 ```json
 {
-  "answer": "Segundo o manual, a distância mínima para alvos metálicos é... Quanto ao hit factor: 120 ÷ 18 = 6,67.",
+  "answer": "According to the rulebook, the minimum distance for metal targets is... As for the hit factor: 120 ÷ 18 = 6.67.",
   "status": "success"
 }
 ```
 
-O modelo escolhe automaticamente entre **consultar o manual (RAG)** e **calcular Hit Factor / Power Factor** via ferramentas.
+The model automatically chooses between **querying the rulebook (RAG)** and **calculating Hit Factor / Power Factor** via tools.
 
 ---
 
-## 📁 Estrutura do Projeto (resumida)
+## 📁 Project Structure (summary)
 
 ```
 ipsc-performance-matrix/
 ├── app/
-│   ├── api.py              # FastAPI, rota /v1/chat e /health
-│   ├── main.py             # Script de teste do chat (Gemini + tools)
+│   ├── api.py              # FastAPI, /v1/chat and /health routes
+│   ├── main.py             # Chat test script (Gemini + tools)
 │   ├── database/
-│   │   └── vector_store.py # ChromaDB, ingestão do PDF e consultar_regras_ipsc
+│   │   └── vector_store.py # ChromaDB, PDF ingestion and consultar_regras_ipsc
 │   └── tools/
 │       └── ballistics.py   # calculate_hit_factor, check_power_factor
-├── data/                   # PDF do manual + vector_db (persistente)
+├── data/                   # Rulebook PDF + vector_db (persistent)
 ├── docker-compose.yml
 ├── dockerfile
-├── ingest_manual.py        # Script para popular o ChromaDB
+├── ingest_manual.py        # Script to populate ChromaDB
 ├── requirements.txt
-└── .env                    # GOOGLE_API_KEY ou GEMINI_API_KEY
+└── .env                    # GOOGLE_API_KEY or GEMINI_API_KEY
 ```
 
 ---
 
 ## 🔗 Links
 
-- **LinkedIn:** [Seu perfil aqui](https://www.linkedin.com/in/samir-zanata-jr-a7a3261b5/)
+- **LinkedIn:** [Samir Zanata](https://www.linkedin.com/in/samir-zanata-jr-a7a3261b5/)
 
 ---
 
-## 📄 Licença
+## 📄 License
 
-Projeto de portfólio. Consulte o repositório para termos de uso.
+Portfolio project. See the repository for terms of use.
