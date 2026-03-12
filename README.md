@@ -27,7 +27,7 @@ O **IPSC Performance Matrix** é um backend de IA pensado para quem treina e com
 | Categoria        | Stack |
 |------------------|--------|
 | **Backend**      | Python 3.11, FastAPI, Uvicorn |
-| **IA / LLM**     | Google Gemini 1.5 Flash, Function Calling (Tools) |
+| **IA / LLM**     | Google Gemini 2.5 Flash, Function Calling (Tools) |
 | **RAG**          | ChromaDB (vector database), embeddings locais (DefaultEmbeddingFunction) |
 | **PDF**          | PyPDF (extração e chunking do manual) |
 | **Infra**        | Docker, Docker Compose |
@@ -38,7 +38,7 @@ O **IPSC Performance Matrix** é um backend de IA pensado para quem treina e com
 ## 🏗 Arquitetura em Resumo
 
 - **Microserviço** em Python com FastAPI e Docker.
-- **Cérebro:** Integração com **Google Gemini 1.5 Flash** usando **Function Calling** para cálculos de Hit Factor e Power Factor.
+- **Cérebro:** Integração com **Google Gemini 2.5 Flash** usando **Function Calling** para cálculos de Hit Factor e Power Factor.
 - **RAG:** Busca semântica no manual de Handgun com **ChromaDB** e embeddings locais (sem API de embedding externa).
 - **Infraestrutura:** Aplicação e volumes persistentes orquestrados com **Docker Compose** (banco vetorial em `./data`).
 
@@ -137,8 +137,7 @@ ipsc-performance-matrix/
 
 ## 🔗 Links
 
-- **LinkedIn:** [Seu perfil aqui](https://www.linkedin.com/in/seu-usuario)
-- **Frontend (NestJS + React):** [Link do projeto ou deploy aqui](https://seu-frontend.com)
+- **LinkedIn:** [Seu perfil aqui](https://www.linkedin.com/in/samir-zanata-jr-a7a3261b5/)
 
 ---
 
