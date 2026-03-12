@@ -1,8 +1,6 @@
 def check_power_factor(bullet_weight_grains: float, velocity_fps: float):
-    # Calculate the Power Factor (PF)
     power_factor = (bullet_weight_grains * velocity_fps) / 1000
-    
-    # Classification Logic
+
     if power_factor >= 160:
         category = "Major"
         is_qualified = True
@@ -12,9 +10,8 @@ def check_power_factor(bullet_weight_grains: float, velocity_fps: float):
     else:
         category = "Sub-Minor"
         is_qualified = False
-        power_factor = 0.0  # Business Rule: Sub-Minor does not score
+        power_factor = 0.0
 
-    # Return the analysis as a Dictionary (Object)
     return {
         "power_factor": round(power_factor, 2),
         "category": category,
@@ -22,17 +19,15 @@ def check_power_factor(bullet_weight_grains: float, velocity_fps: float):
     }
 def calculate_hit_factor(total_points: int, time_seconds: float):
     print("\n[DEBUG] O Agente chamou a função calculate_hit_factor no meu código!")
-    # Protection against Division by Zero
     if time_seconds <= 0:
         return {
             "hit_factor": 0.0,
             "status": "error",
             "message": "Time must be greater than zero."
         }
-    
-    # Standard IPSC Calculation
+
     hf = total_points / time_seconds
-    
+
     return {
         "hit_factor": round(hf, 4),
         "status": "success",

@@ -5,13 +5,10 @@ from chromadb.utils import embedding_functions
 
 class IPSCVectorStore:
     def __init__(self, db_path="./data/vector_db"):
-        # Inicializa o cliente persistente (cria a pasta se não existir)
         self.client = chromadb.PersistentClient(path=db_path)
-        
-        # Modelo de Embedding (Roda localmente, sem custo de API)
+
         self.ef = embedding_functions.DefaultEmbeddingFunction()
-        
-        # Cria ou recupera a coleção (nossa "tabela" de regras)
+
         self.collection = self.client.get_or_create_collection(
             name="ipsc_rules_handgun",
             embedding_function=self.ef
@@ -44,15 +41,13 @@ class IPSCVectorStore:
             page_text = page.extract_text()
             if not page_text: continue
 
-            # Dividir a página em pedaços com sobreposição
             page_chunks = self.split_text_with_overlap(page_text)
-            
+
             for j, chunk in enumerate(page_chunks):
                 all_chunks.append(chunk)
                 all_metadatas.append({"page": i + 1, "chunk": j})
                 all_ids.append(f"p{i+1}_c{j}")
 
-        # Inserção em massa (Batch insert) no Chroma
         self.collection.add(
             documents=all_chunks,
             metadatas=all_metadatas,
@@ -68,18 +63,16 @@ class IPSCVectorStore:
         )
         return results['documents'][0]
 
-# --- ESTA FUNÇÃO FICA FORA DA CLASSE ---
 def consultar_regras_ipsc(pergunta: str) -> str:
     """
-    Consulta o manual oficial de Handgun do IPSC para responder dúvidas sobre regras, 
-    divisões, equipamentos e penalidades. Use esta função sempre que o usuário 
+    Consulta o manual oficial de Handgun do IPSC para responder dúvidas sobre regras,
+    divisões, equipamentos e penalidades. Use esta função sempre que o usuário
     tiver uma dúvida técnica sobre o esporte.
     """
     print(f"\n[DEBUG] Consultando o manual sobre: {pergunta}")
-    
-    store = IPSCVectorStore() # Ele vai abrir a pasta data/vector_db existente
+
+    store = IPSCVectorStore()
     resultados = store.ask_rules(pergunta, n_results=3)
-    
-    # Unimos os 3 pedaços mais relevantes em um texto só para a IA ler
+
     contexto = "\n---\n".join(resultados)
     return contexto

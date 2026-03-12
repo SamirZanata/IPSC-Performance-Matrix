@@ -1,5 +1,3 @@
-# Metadata definitions for the AI Agent to understand available tools
-
 TOOLS_SCHEMA = {
     "calculate_hit_factor": {
         "name": "calculate_hit_factor",
