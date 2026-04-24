@@ -114,6 +114,39 @@ The model automatically chooses between **querying the rulebook (RAG)** and **ca
 
 ---
 
+## 🔌 HTTP contract (e.g. Alpha Tracker Pro / Nest)
+
+Use this to align another service (env `AI_SERVICE_URL`, Docker DNS) without guessing.
+
+| Item | Value |
+|------|--------|
+| **Method** | `POST` |
+| **Path** | `/v1/chat` |
+| **Header** | `Content-Type: application/json` |
+| **Body** | `{ "message": "<user text>" }` only (no `userId` in this API; add that in the caller if you need per-user context server-side). |
+| **200 OK** | JSON including **`answer`** (string) with the model reply. This service also returns **`status`**: `"success"`. Clients that accept **`response`** as a fallback can rely on **`answer`** here. |
+| **Errors** | HTTP **≥ 400** (e.g. invalid request, server error). Callers may surface these as generic upstream errors. |
+
+**Manual check** (adjust host/port if the engine is not on localhost):
+
+```bash
+curl -sS -X POST "http://localhost:8000/v1/chat" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Olá"}'
+```
+
+Expect a JSON body with a string **`answer`**.
+
+### Docker DNS (`ENOTFOUND` / `EAI_AGAIN` on `ipsc-ai-engine`)
+
+Inside Docker, the hostname **`ipsc-ai-engine`** resolves only for containers attached to the **same user-defined bridge network** as this service. This compose file sets `container_name: ipsc-ai-engine` and attaches the app to **`ipsc-network`**.
+
+- **Default Compose:** the network is often named **`{project_directory}_ipsc-network`** (e.g. `ipsc-performance-matrix_ipsc-network`). From the **host**, use `http://localhost:8000`, not `ipsc-ai-engine`.
+- **Shared network with another stack (e.g. Nest):** create a network once (`docker network create ipsc-network`) and in **both** compose files declare that network as **`external: true`** with the same name, attach both services, and set `AI_SERVICE_URL` to `http://ipsc-ai-engine:8000/v1/chat` (or whatever hostname/port/path you standardize on).
+- **Caller on the host, engine in Docker:** use `http://127.0.0.1:8000/v1/chat` (published port), not `ipsc-ai-engine`.
+
+---
+
 ## 📁 Project Structure (summary)
 
 ```

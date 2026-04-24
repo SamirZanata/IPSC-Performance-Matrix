@@ -1,8 +1,8 @@
-#!/home/zanata_desktop/ipsc-performance-matrix/venv/bin/python3
-# -*- coding: utf-8 -*-
-import re
+#!/bin/sh
+'''exec' "/home/samir/Área de trabalho/Projetos/IPSC/IPSC-Performance-Matrix/venv/bin/python3" "$0" "$@"
+' '''
 import sys
 from build.__main__ import entrypoint
 if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
     sys.exit(entrypoint())

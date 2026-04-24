@@ -1,5 +1,5 @@
 services:
-  ai-service:
+  ipsc-ai-engine:
     build: .
     container_name: ipsc-ai-engine
     ports:
@@ -14,4 +14,4 @@ services:
 
 networks:
   ipsc-network:
-    driver: bridge
+    external: true

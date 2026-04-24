@@ -1,4 +1,6 @@
-#!/home/zanata_desktop/ipsc-performance-matrix/venv/bin/python3
+#!/bin/sh
+'''exec' "/home/samir/Área de trabalho/Projetos/IPSC/IPSC-Performance-Matrix/venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys
